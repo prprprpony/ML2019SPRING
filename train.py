@@ -31,14 +31,18 @@ assert(x_data.shape == (N, K))
 assert(y_data.shape == (N, ))
 # 
 w = np.ones(K) / K
-lr = 1e-6
-T = 10**6
+lr = 1
+T = 10**5
+prev_gra = 0
 xt = x_data.transpose()
 for t in range(T):
     cur_y = np.matmul(x_data, w)
     delta_y = y_data - cur_y
     grad = -2/N * np.matmul(xt, delta_y)
-    w -= lr * grad
-    if t % 10000 == 0:
+    prev_gra += np.sum(np.square(grad))
+    ada = np.sqrt(prev_gra)
+    w -= lr / ada * grad
+    if t % 1000 == 0:
         loss = 1/N * np.sum(np.square(delta_y))
         print(t,loss)
+np.save('weight', w)
