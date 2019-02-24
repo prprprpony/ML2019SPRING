@@ -32,7 +32,7 @@ assert(y_data.shape == (N, ))
 # 
 w = np.ones(K) / K
 lr = 1
-T = 10**5
+T = 10**6
 prev_gra = 0
 xt = x_data.transpose()
 for t in range(T):
