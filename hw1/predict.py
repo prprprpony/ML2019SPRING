@@ -6,7 +6,7 @@ fin = open(sys.argv[1],'r')
 fout = open(sys.argv[2],'w')
 raw_data = list(csv.reader(fin,delimiter=','))
 K = 9 * 18 + 1 # 9 hours * 18 fatures + bias
-w = np.load('weight.npy')
+w = np.load(sys.argv[3])
 f = csv.writer(fout, delimiter=',')
 f.writerow(['id','value'])
 for i in range(0,len(raw_data),18):
