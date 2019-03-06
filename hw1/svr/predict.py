@@ -15,11 +15,16 @@ s_arr = []
 for i in range(0,len(raw_data),18):
     x = []
     for j in range(18):
-        x += raw_data[i+j][2:]
+        tmp = raw_data[i+j][2:]
+        for k in range(len(tmp)):
+            if tmp[k] == 'NR':
+                tmp[k] = 0
+        tmp = list(map(float,tmp))
+        for k in range(len(tmp)):
+            if tmp[k] < 0:
+                tmp[k] = tmp[k-1]
+        x += tmp
     s = raw_data[i][0]
-    for j in range(len(x)):
-        if x[j] == 'NR':
-            x[j] = '0'
     x.append(1)
     x_data.append(x)
     s_arr.append(s)

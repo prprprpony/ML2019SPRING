@@ -16,6 +16,10 @@ for i in range(len(raw_data)):
 concat_data = [[] for i in range(18)]
 for i in range(len(raw_data)):
     concat_data[i % 18] += raw_data[i]
+for i in range(18):
+    for j in range(len(concat_data[i])):
+        if concat_data[i][j] < 0:
+            concat_data[i][j] = concat_data[i][j-1]
 x_data = []
 y_data = []
 for base in range(0,len(concat_data[0]),20*24): # 20 days
@@ -23,25 +27,18 @@ for base in range(0,len(concat_data[0]),20*24): # 20 days
         x = []
         for j in range(18):
             x += concat_data[j][base+i:base+i+9]
-        flag = False
-        for v in x:
-            if v < 0:
-                flag = True
-        if flag:
-            continue
         x_data.append(x+[1])
         y_data.append(concat_data[9][base+i+9])
 x_data = np.array(x_data)
 y_data = np.array(y_data)
-#N = 471 * 12
-N = len(x_data)
+N = 471 * 12
 K = 9 * 18 + 1 # 9 hours * 18 fatures + bias
 print(N,K)
 assert(x_data.shape == (N, K))
 assert(y_data.shape == (N, ))
 # 
 #svm_reg = LinearSVR(C=0.001)
-svm_reg = LinearSVR(C=0.001)
+svm_reg = LinearSVR(C=0.00125)
 '''
 param_grid = dict(kernel=['rbf', 'linear','poly','sigmoid'], C=range(1,100), gamma=np.arange(1e-4,1e-2,0.0001).tolist())
 svm_reg = SVR()
