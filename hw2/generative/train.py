@@ -9,7 +9,7 @@ def covariance(x):
     return sigma 
 # preprocess data
 x_data = np.genfromtxt('../X_train', delimiter=',')[1:,]
-N = x_data.shape[0]
+N, K  = x_data.shape
 mean = np.mean(x_data, axis = 0)
 std = np.std(x_data, axis = 0)
 x_data = (x_data - mean) / std
@@ -26,7 +26,11 @@ K = x_data.shape[1]
 mu0 = np.mean(x[0], axis = 0)
 mu1 = np.mean(x[1], axis = 0)
 sigma = N0/N * np.cov(x[0],rowvar=False) + N1/N * np.cov(x[1],rowvar=False)
-si = np.linalg.inv(sigma)
+si = np.linalg.pinv(sigma)
 w = (mu1 - mu0) @ si
 b = -0.5 * mu1.reshape(1,K) @ si @ mu1 + 0.5 * mu0.reshape(1,K) @ si @ mu0 + np.log(N1/N0)
+z = np.matmul(x_data, w) + b
+fw = 1/(1+np.exp(-z))
+accuracy = np.sum((fw > 0.5) == y_data) / N
+print(accuracy)
 np.savez('weight', mean=mean, std=std, w=w,b=b)
