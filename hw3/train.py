@@ -7,7 +7,7 @@ from keras.layers import Conv2D,MaxPooling2D,Flatten,Dense,Dropout,BatchNormaliz
 from keras.models import load_model
 # initlize model
 model = None
-if sys.argc == 2:
+if len(sys.argv) == 3:
     print("load " + sys.argv[2] + " to keep training")
     model = load_model(sys.argv[2])
 else:
