@@ -4,34 +4,40 @@ import os, sys, time
 from keras.utils import to_categorical
 from keras.models import Sequential
 from keras.layers import Conv2D,MaxPooling2D,Flatten,Dense,Dropout,BatchNormalization
+from keras.models import load_model
 # initlize model
-model = Sequential()
-model.add(Conv2D(32, (3,3), input_shape = (48,48,1), activation = 'elu'))
-model.add(BatchNormalization())
-model.add(Conv2D(32, (3,3), activation = 'elu'))
-model.add(BatchNormalization())
-model.add(MaxPooling2D(pool_size = (2, 2)))
-model.add(Dropout(0.2))
+model = None
+if sys.argc == 2:
+    print("load " + sys.argv[2] + " to keep training")
+    model = load_model(sys.argv[2])
+else:
+    model = Sequential()
+    model.add(Conv2D(32, (3,3), input_shape = (48,48,1), activation = 'elu'))
+    model.add(BatchNormalization())
+    model.add(Conv2D(32, (3,3), activation = 'elu'))
+    model.add(BatchNormalization())
+    model.add(MaxPooling2D(pool_size = (2, 2)))
+    model.add(Dropout(0.2))
 
-model.add(Conv2D(64, (3,3), activation = 'elu'))
-model.add(BatchNormalization())
-model.add(Conv2D(64, (3,3), activation = 'elu'))
-model.add(BatchNormalization())
-model.add(MaxPooling2D(pool_size = (2, 2)))
-model.add(Dropout(0.3))
+    model.add(Conv2D(64, (3,3), activation = 'elu'))
+    model.add(BatchNormalization())
+    model.add(Conv2D(64, (3,3), activation = 'elu'))
+    model.add(BatchNormalization())
+    model.add(MaxPooling2D(pool_size = (2, 2)))
+    model.add(Dropout(0.3))
 
-model.add(Conv2D(128, (3,3), activation = 'elu'))
-model.add(BatchNormalization())
-model.add(Conv2D(128, (3,3), activation = 'elu'))
-model.add(BatchNormalization())
-model.add(MaxPooling2D(pool_size = (2, 2)))
-model.add(Dropout(0.4))
+    model.add(Conv2D(128, (3,3), activation = 'elu'))
+    model.add(BatchNormalization())
+    model.add(Conv2D(128, (3,3), activation = 'elu'))
+    model.add(BatchNormalization())
+    model.add(MaxPooling2D(pool_size = (2, 2)))
+    model.add(Dropout(0.4))
 
-model.add(Flatten())
-model.add(Dense(units = 7, activation ='softmax'))
+    model.add(Flatten())
+    model.add(Dense(units = 7, activation ='softmax'))
 
-model.compile(optimizer = 'adam', loss = 'categorical_crossentropy', metrics = ['accuracy'])
-print(model.summary())
+    model.compile(optimizer = 'adam', loss = 'categorical_crossentropy', metrics = ['accuracy'])
+    print(model.summary())
 #exit(0)
 # preprocess data
 x_data = pd.read_csv(os.popen("tail -n +2 " + sys.argv[1] + " | sed 's/,/ /g'"), sep=' ', header=None).values
