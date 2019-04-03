@@ -1,6 +1,6 @@
 import numpy as np
 import pandas as pd
-import os, sys, time
+import os, sys, time, datetime
 from keras.utils import to_categorical
 from keras.models import Sequential
 from keras.layers import Conv2D,MaxPooling2D,Flatten,Dense,Dropout,BatchNormalization
@@ -48,8 +48,8 @@ x_data = x_data.reshape((x_data.shape[0],48,48,1))
 try:
     model.fit(x_data, y_data,batch_size=100,epochs=60)
 except:
-    model.save(str(int(time.time())) + '-CNN-crashed.h5')
+    model.save(datetime.datetime.now().strftime("%m-%d-%H:%M:%S") + '-CNN-crashed.h5')
 result = model.evaluate(x_data,y_data)
 print(result)
 accuracy = result[1]
-model.save(str(accuracy) + '-' + str(int(time.time())) + '-CNN.h5')
+model.save(datetime.datetime.now().strftime("%m-%d-%H:%M:%S-") + str(accuracy) + '-CNN.h5')
