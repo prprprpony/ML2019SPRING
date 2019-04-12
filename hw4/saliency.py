@@ -1,6 +1,8 @@
 import numpy as np
 import pandas as pd
 import os, sys, time, datetime
+import matplotlib
+matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 
 import keras.backend as K
