@@ -17,7 +17,7 @@ def get_saliency_map(image,i):
     return get_gradients([x,0])[0][0]
 
 
-def get_map(image,i,base=None,ns=50):
+def get_map(image,i,base=None,ns=10):
     if base is None:
         base = np.zeros_like(image)
     diff = image - base
