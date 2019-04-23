@@ -38,7 +38,7 @@ for start in range(0,N,bs):
 
 
     epsilon = 1e-4
-    alpha = 5e-3
+    alpha = 1e-2
     epochs = 17
 
     target = torch.zeros(image.shape[0],dtype=torch.long).cuda()
