@@ -8,15 +8,21 @@ output=open(sys.argv[3],'w')
 punct = set(u''':!),.:;?]}¢'"、。〉》」』】〕〗〞︰︱︳﹐､﹒
         ﹔﹕﹖﹗﹚﹜﹞！），．：；？｜｝︴︶︸︺︼︾﹀﹂﹄﹏､～￠
         々‖•·ˇˉ―--′’”([{£¥'"‵〈《「『【〔〖（［｛￡￥〝︵︷︹︻
-        ︽︿﹁﹃﹙﹛﹝（｛“‘-—_…⋯''')
+        ︽︿﹁﹃﹙﹛﹝（｛“‘-—_…⋯!"#$%&()*+,-./:;<=>?@[\]^_`{|}~
+        \u3000\xa0\u2006 ''')
 print(punct)
 filterpunt = lambda s: ''.join(x if x not in punct else ' ' for x in s)
 
 stopwords=(' ')
+first=True
 for line in data:
+    if first:
+        first=False
+        continue
     line=emoji.demojize(line).strip(' \n')
     line=line[line.find(',')+1:]
     line=filterpunt(line)
+    line=line.lower()
     words=jieba.cut(line)
     for word in words:
         if word not in stopwords:
